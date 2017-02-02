@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+const kmsVault = require("../dist").kmsVault;
+kmsVault(process.argv);

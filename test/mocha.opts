@@ -1,0 +1,3 @@
+--compilers ts:ts-node/register test/**/*.ts
+--require espower-ts-node
+--timeout 5000

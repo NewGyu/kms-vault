@@ -1,0 +1,25 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "lib": [
+      "es2015",
+      "es2015.promise",
+      "es2015.generator"
+    ],
+    "types": [
+      "node"
+    ],
+    "allowJs": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
