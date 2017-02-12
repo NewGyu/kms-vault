@@ -4,8 +4,6 @@
     "outDir": "./dist",
     "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "Node",
-    "sourceMap": true,
     "lib": [
       "es2015",
       "es2015.promise",
@@ -14,12 +12,13 @@
     "types": [
       "node"
     ],
-    "allowJs": true,
+    "declaration": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true
   },
   "include": [
+    "index.ts",
     "./src/**/*"
   ]
 }

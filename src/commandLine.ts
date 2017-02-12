@@ -3,13 +3,13 @@ import { Cipher } from "./cipher";
 import { Config } from "./config";
 import { DataKey } from "./datakey";
 
-export function kmsVault(argv: string[], config?: Config) {
+export default function kmsVault(argv: string[], config?: Config) {
   Commander.version("0.1.0")
     .option("-r, --region <region>", "AWS_REGION(default is `us-east-1`)")
     .option("-k, --key [kmsKeyAlias]", "KMS CMK alias name");
 
   Commander.command("decrypt [encryptedBase64String]")
-    .description("decrypt encrypted base64 string ")
+    .description("encrypted base64 string to plain string use CMK.")
     .action((encryptedBase64String, options) => {
       config = config || createConfigFromArgs(options);
       const cipher = new Cipher.Cipher(config);
@@ -25,7 +25,7 @@ export function kmsVault(argv: string[], config?: Config) {
     });
 
   Commander.command("encrypt")
-    .description("encrypt plain string to encrypted base64")
+    .description("plain string to encrypted base64 use CMK")
     .arguments("[plainStr]")
     .action((plainStr, options) => {
       config = config || createConfigFromArgs(options);

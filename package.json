@@ -2,13 +2,22 @@
   "name": "kms-vault",
   "version": "0.1.0",
   "main": "dist/index.js",
+  "bin": "bin/kms-vault",
   "license": "MIT",
+  "readme": "./README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:NewGyu/kms-vault.git"
+  },
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
+    "prepublish": "npm run build",
     "start": "node bin/kms-vault",
     "test": "mocha"
   },
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "dependencies": {
     "aws-sdk": "^2.7.21",
     "co": "^4.6.0",
@@ -26,5 +35,6 @@
     "power-assert": "^1.4.2",
     "ts-node": "^2.0.0",
     "typescript": "^2.1.5"
-  }
+  },
+  "keywords": ["kms", "encrypt"]
 }
