@@ -1,4 +1,7 @@
 import { Cipher } from "./cipher";
+import { spawnSync } from "child_process";
+import { Config } from "./config";
+import * as path from "path";
 
 export namespace KmsConfig {
   //Wrapper for encrypted string in config file.
@@ -8,6 +11,27 @@ export namespace KmsConfig {
 
   export function encrypted(value: string) {
     return new Encrypted(value);
+  }
+
+  export class DecryptSync {
+    constructor(private conf: Config) { }
+    decryptSync(value: string) {
+      const args = ["kms-vault", "-k", this.conf.kmsKeyAlias];
+      if (this.conf.awsOpts && this.conf.awsOpts.region) {
+        args.push("-r");
+        args.push(this.conf.awsOpts.region);
+      }
+      args.push("decrypt");
+      args.push(value);
+      const r = spawnSync("node", args, { cwd: path.join(__dirname, "../bin") });
+      if (r.error) {
+        throw r.error;
+      }
+      if(r.status > 0) {
+        throw new Error(r.stderr.toString());        
+      }
+      return r.stdout.toString().split(/\n|\r|\r\n/)[0];
+    }
   }
 
   export async function decryptConfig(rawConf: Object): Promise<Object> {
