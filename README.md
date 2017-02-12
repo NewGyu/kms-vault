@@ -7,6 +7,12 @@ This kms-vault is encrypt/decrypt tool inspired by [ansible-vault](http://docs.a
 
 ## Usage
 
+### Instalation
+
+```
+$ npm install kms-vault
+```
+
 ### Commandline
 
 ```
@@ -28,9 +34,18 @@ $ $(npm bin)/kms-vault
     -k, --key [kmsKeyAlias]  KMS CMK alias name
 ```
 
+```
+$ $(npm bin)/kms-vault -k alias/forTest encrypt somePassword
+AQECAHhyvC+4FgLo7XdXfh5o6JgnT/l9P+Sq+EPVjq7mGLAIIwAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDCJgX/XbBNkM1kifLwIBEIAnKfV3M+OeH9ErdYUZxYN09EY9vD0HvTH+P9bOTrjNGKKWzTQ2D1wV
+
+$ $(npm bin)/kms-vault -k alias/forTest decrypt AQECAHhyvC+4FgLo7XdXfh5o6JgnT/l9P+Sq+EPVjq7mGLAIIwAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDCJgX/XbBNkM1kifLwIBEIAnKfV3M+OeH9ErdYUZxYN09EY9vD0HvTH+P9bOTrjNGKKWzTQ2D1wV
+somePassword
+```
+
 ### In Code
 
-```
+index.js
+```js
 const co = require("co");
 const KmsConfig = require("kms-vault").KmsConfig;
 
@@ -45,20 +60,22 @@ co(function* () {
 });
 ```
 
+config/default.js
+```js
+"use strict";
+const encrypted = require("kms-vault").KmsConfig.encrypted;
 
-* kms-vault gen-datakey
-* kms-vault encrypt
-  * ファイルを指定して暗号化して上書き
-  * 文字列を指定して暗号化して標準出力
-* kms-vault decrypt
-  * ファイルを指定して復号化して上書き
-  * 文字列を指定して復号化して標準出力
-* configの中で使えるように動機メソッドの提供
-* kms-vault view
-  * ファイルを復号化して標準出力
+module.exports = {
+  db: {
+    user: "hogehoge",
+    password: encrypted("AQECAHhyvC+4FgLo7XdXfh5o6JgnT/l9P+Sq+EPVjq7mGLAIIwAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBHdBm6J8K2A4rKkXAIBEIAnni4TuIRTjGUlmVVgXoXlVRnVBgeqsYD3p+i9HvuqPt7FmbMPx+3V")
+  },
+  "kms-vault": {
+    awsOpts: {
+      region: "us-east-1"
+    },
+    kmsKeyAlias: "alias/forTest"
+  }
+}
+```
 
-* kms-vault edit
-  * ファイルを復号化してVIMで開く
-* kms-vault reencrypt
-  * 暗号化されたファイルを指定して復号化、再度暗号化
-  * 暗号化された文字列を指定して復号化、最暗号化

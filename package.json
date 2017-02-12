@@ -1,6 +1,7 @@
 {
   "name": "kms-vault",
-  "version": "0.1.0",
+  "description": "encrypt/decrypt tool using AWS KMS",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "bin": "bin/kms-vault",
   "license": "MIT",
