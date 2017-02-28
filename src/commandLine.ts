@@ -2,17 +2,22 @@ import * as Commander from "commander";
 import { Cipher } from "./cipher";
 import { Config } from "./config";
 import { DataKey } from "./datakey";
+import * as fs from "fs";
 
 export default function kmsVault(argv: string[], config?: Config) {
   Commander.version("0.1.0")
     .option("-r, --region <region>", "AWS_REGION(default is `us-east-1`)")
-    .option("-k, --key [kmsKeyAlias]", "KMS CMK alias name");
+    .option("-k, --key <kmsKeyAlias>", "KMS CMK alias name")
+    .option("-f, --infile <filepath>", "Input Filename(The file must be written in utf8 or ascii.)")
+    ;
 
-  Commander.command("decrypt [encryptedBase64String]")
+  Commander.command("decrypt")
     .description("encrypted base64 string to plain string use CMK.")
+    .arguments("[encryptedBase64String]")
     .action((encryptedBase64String, options) => {
       config = config || createConfigFromArgs(options);
       const cipher = new Cipher.Cipher(config);
+      encryptedBase64String = encryptedBase64String || fs.readFileSync(options.parent.infile, { encoding: "utf8" });
       cipher.decrypt(encryptedBase64String)
         .then(plainStr => {
           console.log(plainStr);
@@ -30,6 +35,7 @@ export default function kmsVault(argv: string[], config?: Config) {
     .action((plainStr, options) => {
       config = config || createConfigFromArgs(options);
       const cipher = new Cipher.Cipher(config);
+      plainStr = plainStr || fs.readFileSync(options.parent.infile, { encoding: "utf8" });
       cipher.encrypt(plainStr)
         .then(encrypted => {
           console.log(encrypted);
